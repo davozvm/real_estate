@@ -16,6 +16,8 @@ class EstateProperty(models.Model):
         {"bloq", "Bloqueado"}
     ], string= "Status", copy=False, required=True, default="new")
 
+    property_type_id= fields.Many2one(comodel_name= "estate.property.type")
+    
     postcode = fields.Char()
     date_availability = fields.Date(
         copy= False, default = lambda self: fields.Date.add(fields.Date.today(), months= 5))
@@ -34,3 +36,6 @@ class EstateProperty(models.Model):
         ("west", "West"),
         ("NA", "NA"),
     ])
+
+buyer_id = fields.Many2one(comodel_name="res.partner", ondelete="restrict")
+salesperson_id = fields.Many2one(comodel_name="res.users", ondelete="restrict")
