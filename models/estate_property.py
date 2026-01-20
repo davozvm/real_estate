@@ -43,7 +43,6 @@ class EstateProperty(models.Model):
 total_area = fields.Integer(compute= "compute_total_area")
 offer_ids = fields.One2many (comodel_name= "estate.property.offer", inverse_name= "property_id")
 buyer_id = fields.Many2one(comodel_name="res.partner", ondelete="restrict")
-salesperson_id = fields.Many2one(comodel_name="res.users", ondelete="restrict")
 salesperson_id = fields.Many2one(comodel_name= "res.users", ondelete= "restrict", default= lambda self: self.env.user)
 
 @api.depends("living_area", "garden_area")
