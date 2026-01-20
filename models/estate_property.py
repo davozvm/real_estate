@@ -18,7 +18,7 @@ class EstateProperty(models.Model):
 
     property_type_id= fields.Many2one(comodel_name= "estate.property.type")
 
-    tag_id= fields.Many2many(string= "Property Tags", comodel_name= "estate.property.tag")
+    tag_ids= fields.Many2many(string= "Property Tags", comodel_name= "estate.property.tag")
 
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -40,10 +40,13 @@ class EstateProperty(models.Model):
         ("NA", "NA"),
     ])
 
-total_area = fields.Integer(compute= "compute_total_area")
-offer_ids = fields.One2many (comodel_name= "estate.property.offer", inverse_name= "property_id")
-buyer_id = fields.Many2one(comodel_name="res.partner", ondelete="restrict")
-salesperson_id = fields.Many2one(comodel_name= "res.users", ondelete= "restrict", default= lambda self: self.env.user)
+    total_area = fields.Integer(compute= "compute_total_area")
+    
+    offer_ids = fields.One2many (comodel_name= "estate.property.offer", inverse_name= "property_id")
+    
+    buyer_id = fields.Many2one(comodel_name="res.partner", ondelete="restrict")
+    
+    salesperson_id = fields.Many2one(comodel_name= "res.users", ondelete= "restrict", default= lambda self: self.env.user)
 
 @api.depends("living_area", "garden_area")
 def _compute_total_area(self):
