@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     active =  fields.Boolean(default = True)
-    estate = fields.Selection([
+    state = fields.Selection([
         {"new", "New"},
         {"offer_received", "Offer Received"},
         {"offer_accepted", "Offer Accepted"},
@@ -48,17 +48,17 @@ class EstateProperty(models.Model):
     
     salesperson_id = fields.Many2one(comodel_name= "res.users", ondelete= "restrict", default= lambda self: self.env.user)
 
-@api.depends("living_area", "garden_area")
-def _compute_total_area(self):
-    for property in self:
-        property.total_area = property.living_area + property.garden_area
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
-@api.depends("offer_ids.price")
-def _compute_best_offer(self):
-    for property in self:
-        property.best_offer = max(property.offer_ids.mapped("price"), default = 0)
+    @api.depends("offer_ids.price")
+    def _compute_best_offer(self):
+        for property in self:
+            property.best_offer = max(property.offer_ids.mapped("price"), default = 0)
 
-@api.onchange("garden")
-def _onchange_garden(self):
-    self.garden_area = self.garden and 10
-    self.garden_orientation = self.garden and "north" 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        self.garden_area = self.garden and 10
+        self.garden_orientation = self.garden and "north" 
